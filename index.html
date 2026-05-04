@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Partidas del Bot - Al Salir de Clase</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="Configuracion de simulacion">
+            <div class="brand">
+                <div class="brand-icon" aria-hidden="true">
+                    <i data-lucide="graduation-cap"></i>
+                </div>
+                <div>
+                    <p class="brand-title">Al Salir de Clase</p>
+                    <p class="brand-subtitle">Simulador de Bot</p>
+                </div>
+            </div>
+
+            <form id="configForm" class="config-panel">
+                <div class="section-title">
+                    <i data-lucide="settings-2"></i>
+                    <h2>Configuración de simulación</h2>
+                </div>
+
+                <label class="field">
+                    <span>
+                        Número de simulaciones
+                        <span class="hint" title="Cantidad de partidas que se simularán para calcular estadísticas.">?</span>
+                    </span>
+                    <input id="numSimulaciones" name="numSimulaciones" type="number" min="1" max="500000" step="1000" value="50000">
+                    <small>Recomendado: 10.000 - 100.000</small>
+                </label>
+
+                <section class="form-block">
+                    <div class="label-row">
+                        <span>Puntos por amuletos</span>
+                        <span class="hint" title="Puntuación exacta obtenida según el total de amuletos recogidos.">?</span>
+                    </div>
+                    <div class="amulet-list" id="amuletInputs">
+                        <label><span>1 Amuleto</span><input type="number" data-amulet="1" value="1"></label>
+                        <label><span>2 Amuletos</span><input type="number" data-amulet="2" value="2"></label>
+                        <label><span>3 Amuletos</span><input type="number" data-amulet="3" value="3"></label>
+                        <label><span>4 Amuletos</span><input type="number" data-amulet="4" value="4"></label>
+                        <label><span>5 Amuletos</span><input type="number" data-amulet="5" value="5"></label>
+                        <label><span>6 Amuletos</span><input type="number" data-amulet="6" value="6"></label>
+                        <label><span>7 Amuletos</span><input type="number" data-amulet="7" value="7"></label>
+                        <label><span>8 Amuletos</span><input type="number" data-amulet="8" value="8"></label>
+                    </div>
+                </section>
+
+                <section class="form-block">
+                    <div class="label-row">
+                        <span>Puntos por objetivos (esquinas)</span>
+                        <span class="hint" title="Puntos por el número de objetivos logrados a partir de los amuletos.">?</span>
+                    </div>
+                    <div class="objective-grid" id="objectiveInputs">
+                        <label class="objective objective-blue"><span>1 Obj.</span><input type="number" data-objective="1" value="2"></label>
+                        <label class="objective objective-pink"><span>2 Obj.</span><input type="number" data-objective="2" value="6"></label>
+                        <label class="objective objective-orange"><span>3 Obj.</span><input type="number" data-objective="3" value="12"></label>
+                        <label class="objective objective-green"><span>4 Obj.</span><input type="number" data-objective="4" value="20"></label>
+                    </div>
+                </section>
+
+                <label class="field">
+                    <span>
+                        Exámenes - Cartas más altas
+                        <span class="hint" title="Número de cartas más altas que puntúan en cada asignatura.">?</span>
+                    </span>
+                    <select id="cartasAltas" name="cartasAltas">
+                        <option value="0">0 cartas</option>
+                        <option value="1">1 carta</option>
+                        <option value="2">2 cartas</option>
+                        <option value="3" selected>3 cartas</option>
+                        <option value="4">4 cartas</option>
+                    </select>
+                </label>
+
+                <label class="field">
+                    <span>
+                        Exámenes - Cartas más bajas
+                        <span class="hint" title="Número de cartas más bajas que puntúan en cada asignatura.">?</span>
+                    </span>
+                    <select id="cartasBajas" name="cartasBajas">
+                        <option value="0" selected>0 cartas</option>
+                        <option value="1">1 carta</option>
+                        <option value="2">2 cartas</option>
+                        <option value="3">3 cartas</option>
+                        <option value="4">4 cartas</option>
+                    </select>
+                </label>
+
+                <button class="primary-action" type="submit">
+                    <i data-lucide="play"></i>
+                    Ejecutar simulación
+                </button>
+            </form>
+        </aside>
+
+        <main class="content">
+            <header class="topbar">
+                <div>
+                    <h1>Simulador de Partidas del Bot</h1>
+                    <p>Analiza el rendimiento del bot y ajusta la dificultad del juego</p>
+                </div>
+                <div class="toolbar" aria-label="Acciones de configuración">
+                    <button id="saveConfig" class="secondary-action" type="button">
+                        <i data-lucide="save"></i>
+                        Guardar Configuración
+                    </button>
+                    <button id="loadConfig" class="secondary-action" type="button">
+                        <i data-lucide="upload"></i>
+                        Cargar Configuración
+                    </button>
+                    <button id="newSimulation" class="primary-action compact" type="button">
+                        <i data-lucide="play"></i>
+                        Nueva Simulación
+                    </button>
+                    <input id="configFile" type="file" accept="application/json,.json" hidden>
+                </div>
+            </header>
+
+            <section class="results-section">
+                <div class="section-title results-title">
+                    <i data-lucide="gauge"></i>
+                    <h2>Resultados de la simulación</h2>
+                </div>
+
+                <div id="statusMessage" class="status-card" role="status" aria-live="polite">
+                    Preparando simulación inicial...
+                </div>
+
+                <section class="kpi-grid" aria-label="Resumen estadistico">
+                    <article class="kpi-card kpi-blue">
+                        <div class="kpi-icon"><i data-lucide="bar-chart-3"></i></div>
+                        <div>
+                            <span>Rango 80% central</span>
+                            <strong id="kpiRange">--</strong>
+                            <small>puntos habituales</small>
+                        </div>
+                    </article>
+                    <article class="kpi-card kpi-green">
+                        <div class="kpi-icon"><i data-lucide="circle-check"></i></div>
+                        <div>
+                            <span>Puntuación media</span>
+                            <strong id="kpiMean">--</strong>
+                            <small>puntos promedio</small>
+                        </div>
+                    </article>
+                    <article class="kpi-card kpi-purple">
+                        <div class="kpi-icon"><i data-lucide="trophy"></i></div>
+                        <div>
+                            <span>Puntuación mínima</span>
+                            <strong id="kpiMin">--</strong>
+                            <small>puntos</small>
+                        </div>
+                    </article>
+                    <article class="kpi-card kpi-amber">
+                        <div class="kpi-icon"><i data-lucide="star"></i></div>
+                        <div>
+                            <span>Puntuación máxima</span>
+                            <strong id="kpiMax">--</strong>
+                            <small>puntos</small>
+                        </div>
+                    </article>
+                    <article class="kpi-card kpi-cyan">
+                        <div class="kpi-icon"><i data-lucide="gamepad-2"></i></div>
+                        <div>
+                            <span>Desviación estándar</span>
+                            <strong id="kpiStdDev">--</strong>
+                            <small>puntos</small>
+                        </div>
+                    </article>
+                </section>
+
+                <div class="insight-card">
+                    <i data-lucide="info"></i>
+                    <p id="percentileInsight">Ejecuta una simulación para ver el rango de puntuación realista.</p>
+                </div>
+
+                <section class="chart-card">
+                    <div class="chart-heading">
+                        <h3>Distribución de la Puntuación Total (Frecuencia)</h3>
+                        <p>En azul se muestra el 80% de las partidas más habituales descartando la suerte extrema.</p>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="histogramChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="chart-card">
+                    <div class="chart-heading">
+                        <h3>Curva de Probabilidad Acumulada (Para balancear dificultad)</h3>
+                        <p>Si como humano haces X puntos, busca el número en el eje inferior y mira la línea para saber en qué porcentaje de partidas le ganarías al bot.</p>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="cdfChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="chart-card">
+                    <div class="chart-heading">
+                        <h3>Frecuencia de Amuletos Recogidos</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="amuletChart"></canvas>
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <script src="assets/js/simulation.js"></script>
+    <script src="assets/js/charts.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
