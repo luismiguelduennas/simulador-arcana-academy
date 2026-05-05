@@ -84,8 +84,8 @@
 
         statusMessage.innerHTML = [
             `<strong>${formatNumber(config.numSimulaciones)} partidas simuladas en ${formatNumber(elapsedMs)} ms.</strong>`,
-            `Media amuletos: ${formatNumber(averages.amuletos, 2)} | Exámenes medios: ${formatNumber(averages.examenes, 2)} | Total medio: ${formatNumber(averages.total, 2)}`,
-            `Rangos: Amuletos ${ranges.puntosAmuletos.join(" - ")}, Objetivos ${ranges.puntosObjetivos.join(" - ")}, Verde ${ranges.verde.join(" - ")}, Rosa ${ranges.rosa.join(" - ")}, Naranja ${ranges.naranja.join(" - ")}`
+            `Media amuletos: ${formatNumber(averages.amuletos, 2)} | Media puntuación exámenes: ${formatNumber(averages.examenes, 2)} | Media puntuación total: ${formatNumber(averages.total, 2)}`,
+            `Rangos (min-max): Amuletos ${ranges.puntosAmuletos.join(" - ")}, Objetivos ${ranges.puntosObjetivos.join(" - ")}, Verde ${ranges.verde.join(" - ")}, Rosa ${ranges.rosa.join(" - ")}, Naranja ${ranges.naranja.join(" - ")}`
         ].join("<br>");
     }
 

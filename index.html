@@ -59,10 +59,10 @@
                         <span class="hint" title="Puntos por el número de objetivos logrados a partir de los amuletos.">?</span>
                     </div>
                     <div class="objective-grid" id="objectiveInputs">
-                        <label class="objective objective-blue"><span>1 Obj.</span><input type="number" data-objective="1" value="2"></label>
-                        <label class="objective objective-pink"><span>2 Obj.</span><input type="number" data-objective="2" value="6"></label>
-                        <label class="objective objective-orange"><span>3 Obj.</span><input type="number" data-objective="3" value="12"></label>
-                        <label class="objective objective-green"><span>4 Obj.</span><input type="number" data-objective="4" value="20"></label>
+                        <label class="objective objective-blue"><span>1 Obj.</span><input type="number" data-objective="1" value="1"></label>
+                        <label class="objective objective-pink"><span>2 Obj.</span><input type="number" data-objective="2" value="3"></label>
+                        <label class="objective objective-orange"><span>3 Obj.</span><input type="number" data-objective="3" value="6"></label>
+                        <label class="objective objective-green"><span>4 Obj.</span><input type="number" data-objective="4" value="10"></label>
                     </div>
                 </section>
 
@@ -93,11 +93,12 @@
                         <option value="4">4 cartas</option>
                     </select>
                 </label>
-
+                <!--
                 <button class="primary-action" type="submit">
                     <i data-lucide="play"></i>
                     Ejecutar simulación
                 </button>
+                -->
             </form>
         </aside>
 
@@ -185,7 +186,7 @@
                 <section class="chart-card">
                     <div class="chart-heading">
                         <h3>Distribución de la Puntuación Total (Frecuencia)</h3>
-                        <p>En azul se muestra el 80% de las partidas más habituales descartando la suerte extrema.</p>
+                        <p>En azul se muestra el 80% de las partidas más habituales descartando la buena/mala suerte extrema.</p>
                     </div>
                     <div class="chart-wrapper">
                         <canvas id="histogramChart"></canvas>
@@ -194,8 +195,8 @@
 
                 <section class="chart-card">
                     <div class="chart-heading">
-                        <h3>Curva de Probabilidad Acumulada (Para balancear dificultad)</h3>
-                        <p>Si como humano haces X puntos, busca el número en el eje inferior y mira la línea para saber en qué porcentaje de partidas le ganarías al bot.</p>
+                        <h3>Curva de Probabilidad Acumulada</h3>
+                        <p>Muestra qué porcentaje de partidas le ganarías al bot, si como jugador haces X puntos.</p>
                     </div>
                     <div class="chart-wrapper">
                         <canvas id="cdfChart"></canvas>

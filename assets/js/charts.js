@@ -135,12 +135,12 @@
                     tooltip: {
                         ...commonOptions().plugins.tooltip,
                         callbacks: {
-                            title: (items) => `${items[0].label} puntos humanos`,
+                            title: (items) => `${items[0].label} puntos del jugador`,
                             label: (context) => `Victorias: ${context.raw.toFixed(2)}%`
                         }
                     }
                 },
-                scales: baseScales("Puntuación lograda por el Humano", "Probabilidad de Ganar (%)", {
+                scales: baseScales("Puntuación lograda por el jugador", "Probabilidad de Ganar (%)", {
                     min: 0,
                     max: 100,
                     ticks: {
